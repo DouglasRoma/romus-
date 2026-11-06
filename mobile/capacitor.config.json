@@ -1,0 +1,12 @@
+{
+  "appId": "com.douglas.romus.mobile",
+  "appName": "ROMUS",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

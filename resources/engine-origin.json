@@ -1,0 +1,14 @@
+{
+  "name": "Image Atlas",
+  "pluginVersion": "0.16.9",
+  "patches": [
+    "standalone interface wording",
+    "round 24-hour preview as one day",
+    "media note flashcards",
+    "independent embedded page zoom",
+    "media reader controls",
+    "untransformed crisp web surfaces",
+    "inline media and PDF reader",
+    "local PDF web cards"
+  ]
+}

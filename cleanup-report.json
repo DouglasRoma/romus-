@@ -1,0 +1,32 @@
+{
+  "Removed": 20,
+  "Skipped": [],
+  "ClipboardRemoved": 1,
+  "FreeBeforeGB": 35.61,
+  "FreeAfterGB": 36.28,
+  "RecoveredGB": 0.66,
+  "InstallerPreserved": "C:\\Users\\dougl\\OneDrive\\Área de Trabalho\\Cerebr(IA)\\Douglas 2026\\image-atlas-desktop\\release\\ROMUS-0.3.7-Setup.exe",
+  "LibraryPreserved": true,
+  "RemovedPaths": [
+    "C:\\Users\\dougl\\OneDrive\\Área de Trabalho\\Cerebr(IA)\\Douglas 2026\\image-atlas-desktop\\release\\ROMUS-0.3.6-Setup.exe",
+    "C:\\Users\\dougl\\AppData\\Local\\ImageAtlasBuild",
+    "C:\\Users\\dougl\\OneDrive\\Área de Trabalho\\Cerebr(IA)\\Douglas 2026\\image-atlas-desktop\\test-results",
+    "C:\\Users\\dougl\\AppData\\Local\\electron-builder\\Cache",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-board-performance-dvoah6",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-board-performance-FNC9jz",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-board-performance-HhAYPM",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-board-performance-NbagKq",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-board-performance-us96WZ",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-copy-tEzKhT",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-group-purge-PRSisF",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-group-trash-lvFi0W",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-import-QAQ93I",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-links-copy-guDlSw",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-links-m496gy",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-purge-2m8cZ9",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-purge-guard-4rvEHr",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-storage-BsY5Yz",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\atlas-trash-EEn3FV",
+    "C:\\Users\\dougl\\AppData\\Local\\Temp\\codex-clipboard-5e2810b2-70a3-4afb-9861-b3c072081871.png"
+  ]
+}

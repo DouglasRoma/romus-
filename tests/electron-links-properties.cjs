@@ -1,0 +1,64 @@
+const {_electron:electron}=require('C:/Users/dougl/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const fs=require('node:fs/promises'),os=require('node:os'),path=require('node:path'),assert=require('node:assert/strict');
+(async()=>{
+ const home=await fs.mkdtemp(path.join(os.tmpdir(),'atlas-links-properties-'));
+ const application=await electron.launch({executablePath:require('electron'),args:[path.resolve(__dirname,'..')],env:{...process.env,IMAGE_ATLAS_TEST_HOME:home}});
+ try{
+  const page=await application.firstWindow(),errors=[];page.on('pageerror',e=>errors.push(e.stack));
+  await page.getByRole('heading',{name:'Conhecimento que ganha conexões.'}).waitFor();
+  await page.evaluate(async()=>{
+   const source='---\ntema: Urologia\nstatus: estudando\nprioridade: 3\nfeito: false\ndata: 2026-10-25\ntags: [uro, prova]\n---\n# Resumo\n\nUma nota com **formatação**.\n\nPergunta == Resposta\n';
+   const file=await atlasApp.vault.create('Notas/Resumo.md',source);
+   await atlasApp.vault.create('Notas/PSA.md','---\ntema: Urologia\nfeito: false\nprioridade: 1\n---\n# PSA\nUma nota conectada.');
+   await atlasApp.vault.create('Outras/PSA.md','---\ntema: Oncologia\n---\n# Outra PSA\nMesmo título em outra pasta.');
+   await atlasApp.vault.create('Notas/Rim.md','---\ntema: Nefrologia\nfeito: true\nprioridade: 2\n---\n# Rim\nOutro tema.');
+   const entries=(await atlasPlugin.loadReviewEntries({notePath:file.path})).entries;
+   atlasPlugin.getReviewStore().rate(entries[0],3,entries[0].record.revision,new Date());
+   window.historyBefore=JSON.stringify(entries[0].record);window.recordId=entries[0].id;
+   await atlasApp.workspace.getLeaf('tab').openFile(file);
+  });
+  const input=page.getByRole('textbox',{name:'Texto da nota',exact:true}),before=await input.inputValue();
+  await input.fill(before+'\n[[ps');
+  await page.getByRole('listbox',{name:'Vincular nota',exact:true}).waitFor();
+  assert.equal(await page.getByRole('option').filter({hasText:'.md'}).count(),2);
+  await page.getByRole('option').filter({hasText:'Notas/PSA.md'}).click();
+  await page.waitForFunction(()=>document.querySelector('.note-input').value.endsWith('[[Notas/PSA]]'));
+  await input.fill(before+'\n[[PSA]]');await input.evaluate(el=>{el.focus();el.setSelectionRange(el.value.length-2,el.value.length-2);el.dispatchEvent(new Event('input',{bubbles:true}))});
+  await page.getByRole('option').first().waitFor();await input.press('ArrowDown');await input.press('Enter');
+  assert((await input.inputValue()).endsWith('[[Outras/PSA]]'));assert(!(await input.inputValue()).endsWith(']]]]'));
+  await input.fill(before+'\n[[Nova conexão');await page.getByRole('option').filter({hasText:'Criar nota'}).waitFor();await input.press('Enter');
+  await page.waitForFunction(()=>document.querySelector('.note-input').value.endsWith('[[Notas/Nova conexão]]'));
+  assert(await page.evaluate(()=>!!atlasApp.vault.getFileByPath('Notas/Nova conexão.md')));
+  await input.fill(before+'\n[[ps');await page.getByRole('listbox',{name:'Vincular nota'}).waitFor();await input.press('Escape');assert.equal(await page.getByRole('listbox',{name:'Vincular nota'}).count(),0);
+  await input.fill(before+'\n[[Notas/PSA]]');await page.keyboard.press('Control+s');
+  const editedBody=await input.inputValue();
+  await page.getByRole('button',{name:'Propriedades',exact:true}).click();await page.locator('.atlas-property-row').first().waitFor();
+  const row=name=>page.locator('.atlas-property-row').filter({has:page.getByLabel('Nome da propriedade',{exact:true}).filter({hasNotText:'never'})}).filter({has:page.locator('input[value="'+name+'"]')});
+  // Find names by their live values, independent of HTML attribute serialization.
+  const property=async name=>{const rows=page.locator('.atlas-property-row');for(let i=0;i<await rows.count();i++)if(await rows.nth(i).getByLabel('Nome da propriedade',{exact:true}).inputValue()===name)return rows.nth(i);throw Error('Missing property '+name)};
+  await (await property('status')).getByRole('textbox',{name:'Valor da propriedade'}).fill('revisado');
+  await (await property('prioridade')).getByRole('spinbutton',{name:'Valor da propriedade'}).fill('5');
+  await (await property('feito')).getByRole('checkbox',{name:'Valor da propriedade'}).check();
+  await page.getByRole('button',{name:'+ Adicionar propriedade',exact:true}).click();
+  const last=page.locator('.atlas-property-row').last();await last.getByLabel('Nome da propriedade',{exact:true}).fill('baralho');await last.getByRole('textbox',{name:'Valor da propriedade'}).fill('Urologia 2026');
+  await page.getByRole('button',{name:'Salvar propriedades',exact:true}).click();await page.locator('.atlas-properties-modal').waitFor({state:'detached'});
+  assert.equal(await input.inputValue(),editedBody);
+  assert(await page.evaluate(async()=>{const file=atlasApp.vault.getFileByPath('Notas/Resumo.md'),raw=await atlasApp.vault.read(file),data=await atlasPlugin.loadReviewEntries({notePath:file.path});return raw.includes('prioridade: 5')&&raw.includes('feito: true')&&raw.includes('baralho: Urologia 2026')&&data.entries[0].id===recordId&&JSON.stringify(data.entries[0].record)===historyBefore}));
+  await page.getByRole('button',{name:'Biblioteca de notas',exact:true}).click();await page.locator('.atlas-library-card').first().waitFor();assert.equal(await page.locator('.atlas-library-card').count(),5);
+  await page.getByRole('button',{name:'+ Filtro por propriedade',exact:true}).click();await page.getByRole('combobox',{name:'Propriedade para filtrar'}).selectOption('tema');await page.getByRole('textbox',{name:'Valor do filtro'}).fill('URO');assert.equal(await page.locator('.atlas-library-card').count(),2);
+  await page.getByRole('button',{name:'+ Filtro por propriedade',exact:true}).click();await page.getByRole('combobox',{name:'Propriedade para filtrar'}).nth(1).selectOption('feito');await page.getByRole('combobox',{name:'Condição do filtro'}).nth(1).selectOption('equals');await page.getByRole('textbox',{name:'Valor do filtro'}).nth(1).fill('true');assert.equal(await page.locator('.atlas-library-card').count(),1);
+  await page.getByRole('button',{name:'Lista',exact:true}).click();assert(await page.locator('.atlas-notes-grid').evaluate(el=>el.classList.contains('is-list')));
+  await page.getByRole('button',{name:'Cartões',exact:true}).click();
+  await page.getByRole('button',{name:'Remover filtro'}).last().click();await page.getByRole('button',{name:'Remover filtro'}).last().click();
+  await application.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows()[0].showInactive());
+  await page.screenshot({path:path.resolve(__dirname,'../test-results/library-dark.png')});
+  await page.getByRole('button',{name:'Alternar tema',exact:true}).click();await page.screenshot({path:path.resolve(__dirname,'../test-results/library-light.png')});
+  await page.getByRole('button',{name:'Alternar tema',exact:true}).click();
+  await page.getByRole('button',{name:'Novo whiteboard',exact:true}).click();await page.locator('.ia-viewport').waitFor();
+  assert(await page.locator('.ia-toolbar').evaluate(el=>el.getBoundingClientRect().height<=60));
+  await page.locator('summary[aria-label="Adicionar"]').click();await page.getByRole('button',{name:'Mapa mental',exact:true}).click();await page.getByRole('button',{name:'Criar do zero',exact:true}).click();await page.getByPlaceholder('Ex.: Riñón').fill('Ideia central');await page.getByRole('button',{name:'Salvar',exact:true}).click();
+  await page.getByRole('button',{name:'Conectar',exact:true}).click();assert(await page.evaluate(()=>atlasApp.workspace.activeLeaf.view.mode==='connect'));await page.getByRole('button',{name:'Mover',exact:true}).click();
+  await page.screenshot({path:path.resolve(__dirname,'../test-results/refined-board.png')});assert.equal(errors.length,0,errors.join('\n'));
+  console.log('PASS: editor [[ completion/click/keyboard/creation/Escape/closing brackets, typed YAML properties, note body and FSRS identity/history preserved, all-notes library with AND filters, list/grid, dark/light, compact original canvas controls.');
+ }finally{await application.close()}
+})().catch(error=>{console.error(error);process.exitCode=1});

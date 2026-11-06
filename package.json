@@ -1,0 +1,63 @@
+{
+  "name": "image-atlas-desktop",
+  "productName": "ROMUS",
+  "version": "0.3.7",
+  "description": "Whiteboards, mapas mentais, notas Markdown e revisão FSRS local.",
+  "author": "Douglas",
+  "private": true,
+  "main": "src/main.cjs",
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "start": "npm run build && electron .",
+    "test": "node --test tests/*.test.cjs",
+    "dist": "node scripts/package.cjs",
+    "pack": "npm run build && electron-builder --dir --win --x64",
+    "dev": "node scripts/dev.cjs"
+  },
+  "devDependencies": {
+    "@tiptap/core": "^3.32.0",
+    "@tiptap/extension-image": "^3.32.0",
+    "@tiptap/extension-link": "^3.32.0",
+    "@tiptap/extension-table": "^3.32.0",
+    "@tiptap/markdown": "^3.32.0",
+    "@tiptap/starter-kit": "^3.32.0",
+    "dompurify": "^3.3.0",
+    "electron": "45.0.0",
+    "electron-builder": "26.18.0",
+    "esbuild": "^0.25.0",
+    "lucide": "^0.468.0",
+    "marked": "^16.0.0",
+    "minisearch": "7.2.0",
+    "pdfjs-dist": "5.5.207",
+    "yaml": "^2.8.0"
+  },
+  "build": {
+    "appId": "com.douglas.imageatlas",
+    "productName": "ROMUS",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "src/main.cjs",
+      "src/preload.cjs",
+      "src/storage.cjs",
+      "package.json",
+      "resources/**/*",
+      "src/media-player-server.cjs"
+    ],
+    "asar": true,
+    "win": {
+      "target": "nsis",
+      "artifactName": "ROMUS-${version}-Setup.${ext}",
+      "signExecutable": false,
+      "icon": "resources/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}

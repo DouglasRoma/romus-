@@ -1,0 +1,10 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs/promises'),path=require('node:path'),os=require('node:os');const {Library}=require('../src/storage.cjs');
+test('mídia, Markdown, PDF e backups vão juntos para a lixeira e restauram juntos',async()=>{
+ const root=await fs.mkdtemp(path.join(os.tmpdir(),'atlas-group-trash-')),library=new Library(root);await library.write('snapshot.json','{}',false,true);await library.write('Mídia/Nota.md','Resumo',false,true);await library.write('Mídia/Nota.md','Resumo novo');await library.write('Mídia/Arquivo.pdf','%PDF-1.4',false,true);
+ const entry=await library.trash('snapshot.json',{kind:'media',title:'Estudo',attachments:['Mídia/Nota.md','Mídia/Arquivo.pdf']});assert.equal((await library.trashList()).length,1);assert.equal(entry.attachments.length,2);await assert.rejects(library.read('Mídia/Nota.md'));await assert.rejects(library.read('Mídia/Arquivo.pdf'));
+ await library.restore(entry.id);assert.equal(await library.read('Mídia/Nota.md'),'Resumo novo');assert.equal(await library.read('Mídia/Nota.md.atlas-backup'),'Resumo');assert.equal(await library.read('Mídia/Arquivo.pdf'),'%PDF-1.4');assert.equal((await library.trashList()).length,0);
+});
+test('restauração em grupo não sobrescreve arquivos; excluir definitivamente apaga só o grupo',async()=>{
+ const root=await fs.mkdtemp(path.join(os.tmpdir(),'atlas-group-purge-')),library=new Library(root);await library.write('snapshot.json','{}',false,true);await library.write('Nota.md','Nota antiga',false,true);const entry=await library.trash('snapshot.json',{kind:'media',attachments:['Nota.md']});await library.write('Nota.md','Nova nota',false,true);
+ await assert.rejects(library.restore(entry.id),/Já existe/);assert.equal(await library.read('Nota.md'),'Nova nota');assert.equal((await library.trashList()).length,1);await library.purge(entry.id);assert.equal(await library.read('Nota.md'),'Nova nota');assert.equal((await library.trashList()).length,0);
+});

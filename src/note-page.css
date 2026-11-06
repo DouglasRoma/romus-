@@ -1,0 +1,192 @@
+/* Note pages: local metadata, lazy media cards and retained Markdown editors. */
+#romus-new-tab{flex:0 0 32px;min-width:32px;height:31px;min-height:31px;margin:1px 5px 5px;border:0;background:transparent;color:var(--text-muted);padding:7px;border-radius:8px;-webkit-app-region:no-drag}
+#romus-new-tab:hover{color:var(--text-accent);background:var(--background-modifier-hover)}
+#tabs{scrollbar-width:none}#tabs::-webkit-scrollbar{display:none}
+.romus-new-tab-page{overflow:auto;background:var(--background-primary)}
+.romus-new-tab-content{max-width:760px;margin:clamp(30px,8vh,90px) auto;padding:26px 35px}
+.romus-page-kicker{font-size:10px;letter-spacing:.12em;font-weight:600;color:var(--text-accent)}
+.romus-new-tab-content h1{font-size:36px;letter-spacing:-1px;font-weight:550;margin:15px 0 25px}
+.romus-tab-search{display:flex;align-items:center;gap:12px;border:1px solid var(--background-modifier-border);border-radius:14px;padding:9px 16px;background:var(--background-primary-alt)}
+.romus-tab-search>span{display:flex;color:var(--text-muted)}.romus-tab-search svg{width:19px;height:19px}
+.romus-tab-search input{background:none;border:0;outline:0!important;min-width:0;flex:1;font-size:15px;padding:9px 0}
+.romus-tab-search:focus-within{border-color:var(--text-accent)}
+.romus-new-tab-actions{display:flex;gap:9px;margin:16px 0 28px}.romus-new-tab-actions button{border-radius:9px;padding:9px 13px}
+.romus-page-tabs{display:flex;gap:5px;border-bottom:1px solid var(--background-modifier-border);padding-bottom:10px}
+.romus-page-tabs button{background:transparent;border:0;font-size:12px;color:var(--text-muted)}
+.romus-page-tabs button[aria-selected=true]{background:var(--background-modifier-hover);color:var(--text-normal)}
+.romus-tab-results{display:flex;flex-direction:column;gap:3px;margin-top:12px}
+.romus-tab-result{justify-content:flex-start;gap:12px;background:none;border:0;text-align:left;padding:12px;border-radius:10px;font-size:13px}
+.romus-tab-result>span:first-child{display:flex;color:var(--text-accent)}.romus-tab-result svg{width:17px;height:17px}
+.romus-tab-result>span:nth-child(2){flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.romus-tab-result small{font-size:10px;color:var(--text-faint)}
+.romus-tab-result.is-highlighted{background:var(--background-modifier-hover)}
+.note-editor{padding:16px clamp(18px,4vw,55px) 0}.atlas-pane-slot .note-editor{padding:16px 24px 0}
+.atlas-note-header,.atlas-writing-area,.romus-note-hub{max-width:980px}
+.atlas-note-header{margin-bottom:0}.atlas-note-actions{align-self:flex-start;margin:0 0 18px;flex-wrap:wrap;max-width:100%}
+.note-tools{padding:3px 0 9px}.note-tools>.atlas-note-title{font-size:34px;line-height:1.2;font-weight:600;letter-spacing:-.9px}
+.note-editor .note-tools>.atlas-note-title{font-size:36px;font-weight:600;padding:0}
+.note-editor .atlas-rich-editor>.tiptap{padding-left:0;padding-right:20px}
+.atlas-note-breadcrumb{display:none}.atlas-note-save-status{font-size:9px;min-height:12px;margin:4px 0;color:var(--text-faint)}
+.romus-note-cover{position:relative;height:155px;overflow:hidden;border-radius:14px;margin-bottom:22px;flex:none;background:var(--background-secondary)}
+.romus-note-cover>img{width:100%;height:100%;display:block;object-fit:cover;object-position:center}
+.romus-cover-tools{display:flex;margin:0 0 12px}.romus-cover-tools button{padding:6px 8px;background:transparent;border-color:transparent;color:var(--text-faint);font-size:11px}
+.romus-cover-tools button:hover{color:var(--text-accent);background:var(--background-modifier-hover)}
+.romus-cover-actions{position:absolute;right:12px;bottom:12px;display:flex;gap:5px}.romus-cover-actions button{padding:6px 9px;background:var(--background-primary);font-size:10px;border-radius:7px}
+.romus-cover-presets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:3px 0 20px}
+.romus-cover-presets button{height:85px;border-radius:10px;border:1px solid #ffffff25;position:relative;justify-content:flex-start;align-items:flex-end;padding:9px}
+.romus-cover-presets button span{font-size:11px;color:white;text-shadow:0 1px 3px #0008}
+.romus-properties-table{display:flex;flex-direction:column;gap:2px;padding:3px 0 8px;margin:4px 0 2px;max-height:230px;overflow:auto;scrollbar-width:thin}
+.romus-property-line{display:grid;grid-template-columns:165px minmax(0,1fr);gap:12px;min-height:34px;align-items:center;border-radius:7px}
+.romus-property-label{display:flex;align-items:center;gap:9px;color:var(--text-muted);font-size:12px;min-width:0;padding:6px 2px}
+.romus-property-label>span:first-child{display:flex;color:var(--text-faint);flex:none}.romus-property-label svg{width:14px;height:14px}
+.romus-property-label>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.romus-property-field{min-width:0}.romus-property-edit{width:100%;justify-content:flex-start;flex-wrap:wrap;gap:5px;min-height:31px;padding:4px 6px;background:none;border:1px solid transparent;border-radius:6px;color:var(--text-normal);text-align:left;font-size:12px}
+.romus-property-edit:hover{background:var(--background-modifier-hover)}.romus-property-edit>span{overflow-wrap:anywhere}
+.romus-properties-table .romus-property-edit{max-width:none;white-space:normal;border-color:transparent;background:transparent;border-radius:6px;color:var(--text-normal);font-size:12px;text-overflow:clip}
+.romus-properties-table .romus-property-edit:hover{background:var(--background-modifier-hover)}
+.romus-property-empty{color:var(--text-faint)}.romus-property-chip{display:inline-flex;padding:3px 7px;border-radius:5px;font-size:11px;line-height:1.35}
+.romus-property-field input[type=checkbox]{width:16px;height:16px;margin-left:6px;accent-color:var(--interactive-accent);cursor:pointer}
+.romus-property-input{width:100%;min-height:31px;padding:5px 7px;font-size:12px;background:var(--background-primary-alt);border-radius:6px}
+.romus-property-add{justify-content:flex-start;align-self:flex-start;background:transparent;border:0;padding:6px 2px;font-size:11px;color:var(--text-faint);gap:7px;margin:4px 0 0;flex-direction:row-reverse}
+.romus-property-add svg{width:13px;height:13px}.romus-property-add:hover{color:var(--text-accent)}
+.romus-property-form{display:flex;flex-direction:column;gap:9px}.romus-property-form label{font-size:12px;color:var(--text-muted)}.romus-property-picker{width:min(440px,94vw)}
+.romus-property-choices{display:flex;flex-direction:column;gap:4px;margin:5px 0 12px;max-height:300px;overflow:auto}
+.romus-property-choices>button{justify-content:flex-start;gap:8px;background:transparent;border:0;padding:7px}.romus-property-choices>button>span:first-child{width:14px}
+.romus-property-choices [aria-pressed=true]{background:var(--background-modifier-hover)}
+.romus-note-sections{display:flex;gap:15px;border-bottom:1px solid var(--background-modifier-border);margin:12px 0 0;padding:0;overflow-x:auto;flex:none}
+.romus-note-sections button{flex:none;border:0;border-bottom:2px solid transparent;border-radius:0;background:none;padding:10px 1px;font-size:11px;color:var(--text-muted);white-space:nowrap}
+.romus-note-sections button svg{width:14px;height:14px}.romus-note-sections button[aria-selected=true]{color:var(--text-accent);border-bottom-color:var(--text-accent)}
+.romus-note-hub{width:100%;margin:0 auto;padding:22px 2px 70px;flex:1;min-height:0;overflow:auto;scrollbar-width:thin}
+.romus-hub-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:19px}
+.romus-hub-heading h2{font-size:22px;letter-spacing:-.5px;font-weight:550;margin:0 0 7px}
+.romus-hub-heading p{font-size:12px;line-height:1.5;color:var(--text-muted);margin:0}.romus-hub-heading>.ia-tool{flex:none;min-height:33px;font-size:11px}
+.romus-hub-filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}.romus-hub-filters button{border:1px solid var(--background-modifier-border);background:transparent;color:var(--text-muted);font-size:10px;padding:6px 8px;border-radius:7px}
+.romus-hub-filters button[aria-pressed=true]{color:var(--text-accent);border-color:color-mix(in srgb,var(--text-accent) 45%,transparent);background:color-mix(in srgb,var(--text-accent) 10%,transparent)}
+.romus-hub-search{width:100%;font-size:12px;min-height:35px;margin-bottom:16px;background:var(--background-primary-alt)}
+.romus-resources-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.romus-resource-card{min-width:0;border:1px solid var(--background-modifier-border);border-radius:13px;background:var(--background-secondary);overflow:hidden}
+.romus-resource-open{display:flex;flex-direction:column;align-items:stretch;gap:12px;width:100%;padding:0 0 12px;background:transparent;border:0;text-align:left;border-radius:0}
+.romus-resource-open>div:not(.romus-resource-thumb){padding:0 13px}.romus-resource-open h3,.romus-resource-card>h3{font-size:14px;font-weight:550;line-height:1.4;margin:0 0 5px;overflow-wrap:anywhere}
+.romus-resource-open small{font-size:10px;color:var(--text-muted)}
+.romus-resource-thumb{position:relative;aspect-ratio:16/9;background:var(--background-primary-alt);overflow:hidden}.romus-resource-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.romus-resource-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#111b;color:#fff}
+.romus-resource-play svg{width:18px;height:18px}.romus-resource-icon{display:flex;padding:18px 13px 0;color:var(--text-accent)}.romus-resource-icon svg{width:27px;height:27px}
+.romus-resource-actions{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:8px 10px;border-top:1px solid var(--background-modifier-border)}
+.romus-resource-actions button{font-size:10px;background:transparent;border:0;padding:5px 6px;color:var(--text-muted)}.romus-resource-actions button:hover{color:var(--text-accent)}
+.romus-resource-actions button:last-child{margin-left:auto}.romus-resource-actions button svg{width:13px;height:13px}
+.romus-case-card{padding:15px 14px 0}.romus-case-card>.romus-page-kicker{font-size:8px;display:block;margin-bottom:8px}.romus-case-excerpt{font-size:12px;line-height:1.65;color:var(--text-muted);min-height:80px;max-height:100px;overflow:hidden}
+.romus-case-card>.romus-resource-actions{margin:13px -14px 0}
+.romus-note-empty{grid-column:1/-1;text-align:center;border:1px dashed var(--background-modifier-border);border-radius:14px;padding:38px 22px;margin:8px 0;color:var(--text-muted)}
+.romus-note-empty>span{display:inline-flex;color:var(--text-accent);margin-bottom:9px}.romus-note-empty svg{width:26px;height:26px}.romus-note-empty h3{font-size:17px;color:var(--text-normal);font-weight:500}.romus-note-empty p{font-size:12px;line-height:1.65}
+.romus-resource-dialog,.romus-quiz-editor{width:min(710px,94vw)}.romus-resource-dialog .modal-content,.romus-quiz-editor .modal-content{display:flex;flex-direction:column;gap:11px}
+.romus-resource-dialog label,.romus-quiz-editor label{font-size:12px;color:var(--text-muted)}
+.romus-resource-dialog textarea,.romus-quiz-editor textarea{font-size:14px;line-height:1.65;min-height:80px}
+.romus-form-error{font-size:12px;color:var(--text-error);min-height:18px}.romus-case-reader{width:min(850px,94vw)}.romus-case-reader .markdown-preview{padding:6px 0 20px}
+.romus-quiz-options-editor{display:flex;flex-direction:column;gap:8px}.romus-quiz-options-editor>div{display:flex;align-items:center;gap:10px}.romus-quiz-options-editor input[type=radio]{width:16px;height:16px;flex:none;accent-color:var(--interactive-accent)}.romus-quiz-options-editor input:not([type=radio]){flex:1;min-width:0}.romus-quiz-options-editor span{font-size:12px;color:var(--text-muted)}
+.romus-quiz-choice-tools{display:flex;gap:8px;flex-wrap:wrap}.romus-quiz-choice-tools button{font-size:11px}
+.romus-quiz-list{display:flex;flex-direction:column;gap:18px}.romus-quiz-card{background:var(--background-secondary);border:1px solid var(--background-modifier-border);border-radius:16px;padding:20px}
+.romus-quiz-heading{display:flex;align-items:center;gap:6px}.romus-quiz-heading h3{font-size:15px;margin:0 auto 0 0;font-weight:550}.romus-quiz-heading button{font-size:0;background:none;border:0;padding:6px;width:29px;height:29px;gap:0}.romus-quiz-heading svg{width:15px;height:15px}
+.romus-quiz-card>.markdown-preview{font-size:17px;padding:12px 0;line-height:1.6;overflow:visible}.romus-quiz-choices{display:flex;flex-direction:column;gap:8px}
+.romus-quiz-choices button{justify-content:flex-start;text-align:left;gap:11px;padding:11px 12px;line-height:1.5;font-size:13px;background:var(--background-primary);border-radius:10px}
+.romus-quiz-letter{display:grid;place-items:center;flex:none;width:25px;height:25px;background:var(--background-secondary);border:1px solid var(--background-modifier-border);border-radius:7px;color:var(--text-muted);font-size:11px}
+.romus-quiz-choices button[aria-pressed=true]{border-color:var(--text-accent)}.romus-quiz-choices button.is-correct{border-color:var(--romus-green);background:color-mix(in srgb,var(--romus-green) 9%,var(--background-primary))}.romus-quiz-choices button.is-wrong{border-color:var(--text-error);background:color-mix(in srgb,var(--text-error) 8%,var(--background-primary))}
+.romus-quiz-footer{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-top:16px}.romus-quiz-footer strong{font-size:12px;font-weight:500}.romus-quiz-footer button{font-size:11px}.romus-quiz-explanation.markdown-preview{border-top:1px solid var(--background-modifier-border);margin-top:17px;padding:12px 0 0;font-size:14px;line-height:1.7;overflow:visible}
+.note-editor:not([data-note-section=summary])[data-note-section] .atlas-note-outline,.note-editor:not([data-note-section=summary])[data-note-section] .atlas-note-back-top{display:none}
+.note-editor:not([data-note-section=summary])[data-note-section] .romus-note-cover{height:86px;margin-bottom:14px}
+.note-editor:not([data-note-section=summary])[data-note-section] .romus-properties-table,.note-editor:not([data-note-section=summary])[data-note-section] .atlas-note-save-status{display:none}
+.romus-file-reader{padding:25px;display:flex;flex-direction:column;align-items:flex-start;gap:15px}.romus-file-reader p{line-height:1.6}.romus-file-reader video,.romus-file-reader audio{max-width:100%;width:100%}
+.atlas-inline-note-editor .romus-note-cover,.atlas-inline-note-editor .romus-cover-tools,.atlas-inline-note-editor .romus-note-sections,.atlas-inline-note-editor .romus-properties-table{display:none}
+@container(max-width:650px){.romus-resources-grid{grid-template-columns:1fr}.romus-property-line{grid-template-columns:115px minmax(0,1fr);gap:7px}.note-tools>.atlas-note-title{font-size:28px}.romus-hub-heading{flex-wrap:wrap}.romus-note-cover{height:115px}.romus-new-tab-content{padding:20px}.romus-new-tab-content h1{font-size:29px}}
+@container(max-height:560px){.romus-note-cover{height:74px;margin-bottom:10px}.romus-properties-table{max-height:105px}.atlas-note-actions{margin-bottom:8px}.note-tools>.atlas-note-title{font-size:24px}.romus-note-sections{margin-top:5px}.romus-note-sections button{padding:7px 1px;font-size:10px}.romus-cover-tools{margin-bottom:4px}.romus-note-hub{padding-top:14px}}
+/* One responsive page, rather than independently scrolling header/body/media. */
+.note-editor,.atlas-pane-slot .note-editor{position:relative;padding:0;overflow:hidden}
+.romus-page-scroll{display:block;flex:1;min-height:0;width:100%;min-width:0;overflow-y:auto;overflow-x:hidden;padding:20px clamp(18px,3vw,44px) 70px;scrollbar-width:none}
+.romus-page-scroll::-webkit-scrollbar{display:none}
+.note-editor .atlas-note-header,.note-editor .atlas-writing-area,.note-editor .romus-note-hub{width:100%;max-width:none;margin-left:0;margin-right:0}
+.romus-page-scroll>.atlas-writing-area{display:block;overflow:visible;min-height:220px;flex:none;padding-top:15px}
+.romus-page-scroll>.romus-note-hub{display:block;overflow:visible;min-height:240px;flex:none;padding-bottom:10px}
+.note-editor .atlas-rich-editor{max-width:none;margin:0;padding:0 0 50px}
+.note-editor .atlas-rich-editor .tiptap{padding:0;max-width:none;margin:0}
+.romus-page-scroll .markdown-preview{overflow:visible;max-width:none;padding-left:0;padding-right:0}
+.romus-page-scroll>.atlas-writing-area>.atlas-source-input{width:100%;height:60vh;min-height:280px}
+.romus-page-scroll .romus-properties-table{max-height:none;overflow:visible}
+.romus-page-scroll .romus-resources-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:15px}
+.romus-resource-card{display:flex;flex-direction:column;min-height:252px}
+.romus-resource-open{position:relative;flex:1;justify-content:flex-start;gap:11px}
+.romus-resource-open>div:not(.romus-resource-thumb){padding-right:35px}
+.romus-resource-thumb{height:135px;aspect-ratio:auto;flex:none}
+.romus-resource-icon{height:135px;align-items:center;justify-content:center;padding:0;background:color-mix(in srgb,var(--romus-blue) 5%,var(--background-primary-alt))}
+.romus-resource-icon svg{width:34px;height:34px}
+.romus-resource-forward{position:absolute;right:12px;bottom:24px;color:var(--text-faint);display:flex}.romus-resource-forward svg{width:17px;height:17px}
+.romus-resource-actions{margin-top:auto}.romus-case-card{min-height:252px}.romus-case-excerpt{max-height:110px}
+.romus-cover-actions{bottom:17px;flex-wrap:wrap;justify-content:flex-end}
+.romus-cover-resizer{position:absolute;bottom:0;left:0;right:0;height:10px;cursor:ns-resize;touch-action:none;display:flex;justify-content:center;align-items:center}
+.romus-cover-resizer:after{content:'';width:46px;height:3px;border-radius:3px;background:#ffffff80}.romus-cover-resizer:focus-visible{outline:2px solid var(--text-accent);outline-offset:-2px}
+.romus-cover-error{padding:20px;font-size:12px;color:var(--text-muted)}
+.atlas-inline-note-editor .note-editor .atlas-note-header{display:none}
+.atlas-inline-note-editor .romus-page-scroll{padding:0 12px 15px}
+.atlas-inline-note-editor .romus-page-scroll>.atlas-writing-area{padding-top:0;min-height:100px}
+/* Inline editing uses the same Markdown engine in a single, lazy card surface. */
+.ia-card.romus-card-editing{content-visibility:visible}
+.ia-note-content.romus-board-edit-body{padding:0!important;overflow:hidden!important;user-select:text}
+.romus-card-editor{display:flex;flex-direction:column;height:100%;min-height:0;min-width:0;overflow:hidden;user-select:text}
+.romus-card-editor-bar{display:flex;align-items:center;justify-content:space-between;gap:6px;flex:none;padding:5px 9px;border-bottom:1px solid var(--background-modifier-border);background:var(--background-primary)}
+.romus-card-editor-bar .atlas-note-save-status{margin:0;font-size:10px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.romus-card-editor-tools{display:flex;gap:3px;flex:none}
+.romus-card-editor-tools button{display:inline-flex;align-items:center;justify-content:center;padding:4px;min-height:26px}
+.romus-card-editor-host{display:flex;flex:1;min-height:0;min-width:0;overflow:hidden}
+.romus-card-editor-host>.note-editor{display:flex;flex-direction:column;flex:1;width:100%;min-width:0;min-height:0;padding:0;overflow:hidden}
+.romus-card-editor .atlas-note-header,.romus-card-editor .romus-note-hub,.romus-card-editor .atlas-note-outline,.romus-card-editor .atlas-note-back-top{display:none!important}
+.romus-card-editor .romus-page-scroll{padding:10px 12px 20px;scrollbar-width:thin;overscroll-behavior:contain}
+.romus-card-editor .romus-page-scroll>.atlas-writing-area{min-height:100%;padding:0;overflow:visible}
+.romus-card-editor .atlas-rich-editor{padding:0;min-height:100%}
+.romus-card-editor .tiptap{font-size:13px;line-height:1.65;min-height:100px;padding:0;outline:none}
+.romus-card-editor-recovery{position:absolute;z-index:50;bottom:70px;right:20px;width:min(480px,calc(100% - 40px));height:350px;background:var(--background-primary);border:1px solid var(--text-accent);border-radius:12px}
+@container(max-width:539px){.romus-page-scroll{padding:15px 16px 50px}.romus-page-scroll .romus-resources-grid{grid-template-columns:1fr}.note-editor .note-tools>.atlas-note-title{font-size:28px}.romus-cover-actions button{font-size:9px;padding:5px 6px}}
+/* The note toolbar is a hover/focus popover, never a full-width permanent bar. */
+.romus-page-scroll>.atlas-note-header{position:relative;padding-top:0}
+.romus-note-controls{position:absolute;right:4px;top:5px;z-index:45;width:32px;height:38px}
+.romus-note-controls>.romus-note-tools-trigger{width:30px;height:30px;min-height:30px;padding:6px;border:1px solid transparent;background:var(--background-primary);color:var(--text-faint);border-radius:8px;gap:0}
+.romus-note-tools-trigger>span:last-child{display:none}
+.romus-note-controls>.romus-note-tools-trigger:hover{border-color:var(--background-modifier-border);color:var(--text-normal)}
+.romus-note-controls>.atlas-note-actions{display:none;position:absolute;right:0;top:34px;width:max-content;max-width:min(850px,calc(100cqw - 45px));margin:0;padding:7px;gap:3px;background:var(--background-secondary);border:1px solid var(--background-modifier-border);border-radius:12px;box-shadow:var(--shadow-l);z-index:2}
+.romus-note-controls:has(:focus-visible)>.atlas-note-actions,.romus-note-controls.is-open>.atlas-note-actions{display:flex}
+@media(hover:hover){.romus-note-controls:hover>.atlas-note-actions{display:flex}}
+.romus-note-controls>.atlas-note-actions button{min-height:29px;font-size:11px}
+.romus-note-controls>.atlas-note-actions select{font-size:11px}
+.romus-page-scroll .romus-cover-tools{padding-right:45px;min-height:30px}
+/* Batch quiz import and board surfaces use the same note content controller. */
+.romus-quiz-import{width:min(800px,94vw)}.romus-quiz-import .modal-content{display:flex;flex-direction:column;gap:12px}
+.romus-quiz-import-tools{display:flex;gap:6px;flex-wrap:wrap}.romus-quiz-import-tools button{font-size:11px}
+.romus-quiz-import textarea{width:100%;min-height:210px;font:13px/1.7 var(--font-monospace);background:var(--background-primary-alt);resize:vertical}
+.romus-quiz-import-status{white-space:pre-line;font-size:12px;color:var(--text-muted)}.romus-quiz-import-status.is-error{color:var(--text-error)}
+.romus-quiz-import-preview{font-size:12px;line-height:1.8;max-height:170px;overflow:auto;padding:10px 13px;border:1px solid var(--background-modifier-border);border-radius:9px}
+.romus-hub-heading:has(>button:nth-of-type(2)){flex-wrap:wrap;align-items:center}.romus-hub-heading:has(>button:nth-of-type(2))>div{flex:1;min-width:180px}
+.romus-quiz-choice-text{min-width:0;flex:1;overflow-wrap:anywhere}.romus-quiz-choice-text>:first-child{margin-top:0}.romus-quiz-choice-text>:last-child{margin-bottom:0}.romus-quiz-choice-text p{margin:3px 0}.romus-quiz-choice-text img{max-width:100%;height:auto}
+.romus-board-note-actions{display:inline-flex;align-items:center;gap:4px;flex:none}
+.romus-board-note-actions button{font-size:10px;min-height:23px;padding:3px 6px;border:1px solid var(--background-modifier-border);border-radius:6px;color:var(--text-accent);background:var(--background-primary-alt);white-space:nowrap;gap:4px}
+.romus-board-note-actions svg{width:12px;height:12px}.romus-board-note-actions.is-header button{padding:3px 4px;font-size:9px;min-height:22px}
+.ia-node-quick-actions:has(.romus-board-note-actions){flex-wrap:wrap}
+.romus-board-note-panel{position:absolute;display:flex;flex-direction:column;min-width:min(270px,calc(100% - 16px));min-height:min(230px,calc(100% - 16px));max-width:calc(100% - 16px);max-height:calc(100% - 16px);resize:both;overflow:hidden;background:var(--background-primary);border:1px solid var(--background-modifier-border);border-radius:15px;box-shadow:var(--shadow-l);cursor:default;z-index:50}
+.romus-board-note-panel-head{display:flex;align-items:center;gap:5px;padding:10px 12px;flex:none;border-bottom:1px solid var(--background-modifier-border);background:var(--background-secondary);cursor:grab;touch-action:none;user-select:none}
+.romus-board-note-panel-head strong{font-size:14px;font-weight:550;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.romus-board-note-panel-head button{font-size:0;gap:0;width:29px;height:29px;min-height:29px;padding:6px;background:transparent;border:0}.romus-board-note-panel-head svg{width:15px;height:15px}
+.romus-board-note-tabs{display:flex;gap:12px;padding:0 15px;flex:none;border-bottom:1px solid var(--background-modifier-border)}
+.romus-board-note-tabs button{border:0;border-bottom:2px solid transparent;background:transparent;border-radius:0;font-size:11px;padding:10px 0;color:var(--text-muted)}.romus-board-note-tabs [aria-selected=true]{color:var(--text-accent);border-bottom-color:var(--text-accent)}
+.romus-board-note-panel-body{overflow:auto;min-height:0;flex:1;scrollbar-width:thin;overscroll-behavior:contain}
+.romus-board-note-panel .romus-note-hub{max-width:none;overflow:visible;height:auto;padding:17px 15px 25px;margin:0}
+.romus-board-note-panel .romus-hub-heading{flex-wrap:wrap;gap:7px}.romus-board-note-panel .romus-hub-heading h2{font-size:18px}.romus-board-note-panel .romus-hub-heading p{font-size:11px}
+.romus-board-note-panel .romus-resources-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:10px}
+.romus-board-note-panel .romus-quiz-card{padding:14px}.romus-board-note-panel .romus-quiz-heading h3{font-size:14px}
+.romus-board-note-panel .romus-quiz-card>.markdown-preview{font-size:16px}.romus-board-note-panel .romus-quiz-choices button{padding:8px;font-size:12px}
+.romus-board-note-panel .romus-resource-card{min-height:230px}.romus-board-note-panel .romus-resource-thumb,.romus-board-note-panel .romus-resource-icon{height:105px}
+.romus-board-inline-note{display:flex!important;flex-direction:column;overflow:hidden!important;padding:0!important;min-height:0}
+.romus-board-inline-bar{display:flex;align-items:center;gap:5px;padding:5px 7px;flex:none;background:var(--background-primary-alt);border-bottom:1px solid var(--background-modifier-border)}
+.romus-board-inline-bar>span{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:var(--text-muted)}
+.romus-board-inline-bar button{width:23px;height:23px;min-height:23px;padding:4px;font-size:0;gap:0;border:0;background:transparent}.romus-board-inline-bar svg{width:13px;height:13px}
+.romus-board-inline-host{min-height:0;flex:1;display:flex;flex-direction:column;overflow:hidden}
+.romus-board-inline-host .atlas-media-inline{height:100%}.romus-board-inline-host>.atlas-media-inline-actions{flex:none}
+.romus-board-inline-host .romus-file-reader{padding:12px;font-size:12px;min-height:0;overflow:auto}
+.romus-board-case-body.markdown-preview{padding:10px 12px!important;font-size:13px;line-height:1.65;overflow:auto;min-height:0;flex:1}
+.romus-board-case-body.markdown-preview h1{font-size:20px}.romus-board-case-body.markdown-preview h2{font-size:17px}
+.romus-board-panel-reader{height:390px;min-height:200px;display:flex;flex-direction:column;margin-top:12px}
+.romus-case-reader.is-fullscreen{position:fixed;inset:12px;width:auto;max-width:none;max-height:none;height:auto}

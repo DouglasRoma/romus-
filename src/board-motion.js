@@ -1,0 +1,15 @@
+/** Camera gestures take priority over Markdown, metadata and guest-process work. */
+export function installBoardMotion(view){
+ const win=view.contentEl.ownerDocument.defaultView,jobs=new Map(),warm=new Map();
+ let alive=true,timer,frame,lastBoard,lastX,lastY,lastZ;
+ const drain=()=>{frame=null;if(!alive||view.boardMotionActive||view.drag)return;const start=performance.now();let count=0;for(const [key,run]of jobs){jobs.delete(key);run();if(++count>=2||performance.now()-start>4)break}if(jobs.size)frame=win.requestAnimationFrame(drain)};
+ const schedule=()=>{if(alive&&!frame&&jobs.size)frame=win.requestAnimationFrame(drain)};
+ view.deferBoardWork=(key,run)=>{if(!view.boardMotionActive&&!view.drag)return false;jobs.set(key,run);return true};
+ const release=(id,el)=>{if(!el?.isConnected||view.visibleNotes.has(id)||el._romusContent||el.querySelector('.atlas-note-media'))return;const child=view.previews.get(el);if(child){view.removeChild(child);view.previews.delete(el)}el._atlasToken=Symbol();el._atlasRequested=false;el._romusSummaryKey=null;el.replaceChildren();el.createSpan({text:'Resumo · aparece ao aproximar',cls:'ia-muted'})};
+ view.deferNoteRelease=(id,el)=>{if(!el?._atlasRequested)return false;if(el._romusContent||el.querySelector('.atlas-note-media'))return true;if(!view.previews.has(el))return false;warm.delete(el);warm.set(el,id);jobs.set('trim-previews',()=>{for(const [target,key]of warm)if(!target.isConnected||view.visibleNotes.has(key)){warm.delete(target)}while(warm.size>80){const [target,key]=warm.entries().next().value;warm.delete(target);release(key,target)}});schedule();return true};
+ const settle=()=>{timer=null;if(!alive)return;if(view.drag){timer=win.setTimeout(settle,120);return}view.boardMotionActive=false;view.viewport?.classList.remove('romus-board-moving');view.app.vault.trigger('atlas-board-motion-idle',view);schedule()};
+ const ended=()=>{if(!jobs.size&&!view.boardMotionActive)return;win.clearTimeout(timer);timer=win.setTimeout(settle,0)};for(const event of ['pointerup','pointercancel','blur'])view.registerDomEvent(win,event,ended);
+ const camera=view.camera.bind(view);view.camera=(...args)=>{const c=view.board.camera;if(lastBoard===view.board&&(c.x!==lastX||c.y!==lastY||c.z!==lastZ)){view.boardMotionActive=true;view.viewport?.classList.add('romus-board-moving');win.clearTimeout(timer);timer=win.setTimeout(settle,160)}if(view.viewport&&view.viewport.classList.contains('romus-board-overview')!==(c.z<.35))view.viewport.classList.toggle('romus-board-overview',c.z<.35);lastBoard=view.board;lastX=c.x;lastY=c.y;lastZ=c.z;return camera(...args)};
+ const queue=view.queueNotePreview.bind(view);view.queueNotePreview=(path,el)=>{const board=view.board;el._atlasRequested=true;const run=()=>{if(el.isConnected&&view.board===board&&view.visibleNotes.has(el.closest('[data-ia-node]')?.dataset.iaNode))queue(path,el)};if(!view.deferBoardWork(el,run))queue(path,el)};
+ view.register(()=>{alive=false;win.clearTimeout(timer);if(frame)win.cancelAnimationFrame(frame);jobs.clear();warm.clear()});
+}
