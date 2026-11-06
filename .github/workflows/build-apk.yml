@@ -1,8 +1,6 @@
-name: Compilar APK do ROMUS Mobile
+name: Compilar APK do ROMUS Mobile (Opcional)
 
 on:
-  push:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:

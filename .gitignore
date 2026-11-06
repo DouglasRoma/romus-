@@ -3,7 +3,8 @@ mobile/node_modules/
 mobile/android/.gradle/
 mobile/android/app/build/
 release/
-dist/
+/dist/
+*.map
 test-results/
 backups/
 *.log

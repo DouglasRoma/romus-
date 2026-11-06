@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>ROMUS Mobile</title>
+  <link rel="icon" href="assets/brand/romus-favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/brand/romus-favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Desktop Engine & ROMUS Styles -->
+  <link rel="stylesheet" href="shell.css">
+  <link rel="stylesheet" href="engine.css">
+  <link rel="stylesheet" href="pdfjs/pdf_viewer.css">
+  <link rel="stylesheet" href="refined.css">
+  <link rel="stylesheet" href="romus.css">
+  <link rel="stylesheet" href="note-page.css">
+
+  <!-- Mobile Touch & Responsive Styling -->
+  <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+  <div id="application">
+    <aside id="library">
+      <header>
+        <span class="brand-mark">◈</span>
+        <div>
+          <strong>ROMUS</strong>
+          <small>Seu espaço no celular</small>
+        </div>
+      </header>
+      <div id="primary-actions"></div>
+      <input id="file-search" type="search" placeholder="Buscar na biblioteca…" aria-label="Buscar na biblioteca">
+      <div id="files"></div>
+      <footer id="library-footer"></footer>
+    </aside>
+
+    <main>
+      <nav id="tabs" aria-label="Abas abertas"></nav>
+      <div id="workspaces"></div>
+    </main>
+  </div>
+
+  <div id="notices" role="status" aria-live="polite"></div>
+
+  <!-- Mobile Bridge (sets up atlasNative, IndexedDB storage, touch handlers) -->
+  <script type="module" src="mobile-bridge.js"></script>
+
+  <!-- Complete ROMUS Desktop Engine Bundle -->
+  <script type="module" src="app.js"></script>
+
+  <!-- Register PWA Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.warn('Falha no registro do Service Worker:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
